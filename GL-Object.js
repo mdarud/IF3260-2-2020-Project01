@@ -49,7 +49,7 @@ class GLObject {
         var vColor = gl.getAttribLocation( this.shader, "vColor" );
         gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
         gl.enableVertexAttribArray( vColor );
-    
-        gl.drawArrays(gl.TRIANGLE_FAN, 0, 3);
+
+        gl.drawArrays(gl.TRIANGLE_FAN, 0, this.va.length);
     }
 }
