@@ -5,13 +5,21 @@ let vColor, vPosition;
 let canvasWidth, canvasHeight;
 let initialExtents = [0, 640, 0, 480];
 
-let colorIndex = 0;
-let colorCycle = [vec4(0.0, 0.0, 0.0, 1.0), vec4(1.0, 0.0, 0.0, 1.0), vec4(0.0, 1.0, 0.0, 1.0), vec4(0.0, 0.0, 1.0, 1.0)];
+let cIndex = 0;
+let colorCycle = [vec4( 0.0, 0.0, 0.0, 1.0 ),  // black
+    vec4( 1.0, 0.0, 0.0, 1.0 ),  // red
+    vec4( 1.0, 1.0, 0.0, 1.0 ),  // yellow
+    vec4( 0.0, 1.0, 0.0, 1.0 ),  // green
+    vec4( 0.0, 0.0, 1.0, 1.0 ),  // blue
+    vec4( 1.0, 0.0, 1.0, 1.0 ),  // magenta
+    vec4( 0.0, 1.0, 1.0, 1.0 )   // cyan
+];
 let setColor = vec4(0.0, 0.0, 0.0, 1.0);
 
 let drawingHistory = []; // used to keep track of the drawing we have so far
 let drawingPoints = []; // used when drawing a new set of points
-let pointHistory = []
+let pointHistory = [];
+let colorHistory = [];
 
 let drawMode = true;
 let statusdraw = "Nothing"; 
@@ -64,6 +72,14 @@ function main() {
           
           console.log("Drawing")
 
+          var m = document.getElementById("mymenu");
+
+          m.addEventListener("click", function() {
+            cIndex = m.selectedIndex;
+          });
+
+          setColor = colorCycle[cIndex];
+
           if (statusdraw === "Line") {
             console.log("Drawing Lines");
             if (drawingPoints.length === 1){
@@ -71,7 +87,8 @@ function main() {
             }
             // Push these points to the drawing history
             drawingPoints.push(vec4(parseFloat(pos.x), parseFloat(pos.y), 0.0, 1.0));
-            drawingHistory.push(drawingPoints);        
+            drawingHistory.push(drawingPoints);     
+            colorHistory.push(setColor);  
           }
 
           if (statusdraw === "Poligon") {
@@ -84,7 +101,8 @@ function main() {
             }
             // Push these points to the drawing history
             drawingPoints.push(vec4(parseFloat(pos.x), parseFloat(pos.y), 0.0, 1.0));
-            drawingHistory.push(drawingPoints);        
+            drawingHistory.push(drawingPoints);
+            colorHistory.push(setColor);        
           }
 
           if (statusdraw === "Square") {
@@ -116,6 +134,7 @@ function main() {
 
                 drawingPoints.push(vec4(parseFloat(pointHistory[0].x), parseFloat(pointHistory[0].y), 0.0, 1.0));
                 drawingHistory.push(drawingPoints);
+                colorHistory.push(setColor);
                 pointHistory = [];
             }
             // p1 = {x1,y1} p3 = {x2,y2} p2 = {x1,y2} p4 = {x2,y2}
@@ -125,11 +144,12 @@ function main() {
 
           if (newLine) {
               console.log("done");
+              console.log(drawingHistory);
               drawingPoints = [];
               newLine = false;
           }
           for (let d in drawingHistory) {
-              drawLine(drawingHistory[d]);
+              drawLine(drawingHistory[d],colorHistory[d]);
           }
       }
   };
@@ -212,15 +232,16 @@ function adjustCanvasViewport(extentsWidth, extentsHeight) {
 /**
 * Given an array of points, draw them to our global variable "gl"
 * @param points
+* @param color
 */
-function drawLine(points) {
+function drawLine(points,color) {
   gl.bindBuffer(gl.ARRAY_BUFFER, pBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
 
   // for all of our points, push a color
   let colors = [];
   for (let p in points) {
-      colors.push(setColor);
+      colors.push(color);
   }
 
   // let cBuffer = gl.createBuffer();
