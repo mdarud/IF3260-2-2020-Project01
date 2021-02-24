@@ -7,11 +7,7 @@ class GLObject {
     shader;
     bufferId;
     cBufferId;
-    pos;
-    rot;
-    scale;
     gl;
-    projectionMat;
 
     constructor(id, shader, /*bufferId, cBufferId,*/ gl) {
         this.id = id;
@@ -26,52 +22,13 @@ class GLObject {
     }
 
     setColorArray(ca) {
-        this.ca = ca;
+        var length = this.va.length / 2;
+        
+        this.ca = new Array();
+        for (var i = 0; i < length; i++) {
+            this.ca.push(ca);
+        }
     }
-
-    /*
-    setPosition(x, y) {
-        this.pos = [x,y];
-        this.projectionMat = this.calcProjectionMatrix()
-    }
-
-    setRotation(rot) {
-        this.rot = rot;
-        this.projectionMat = this.calcProjectionMatrix()
-    }
-
-    setScale(x, y) {
-        this.scale = [x,y];
-        this.projectionMat = this.calcProjectionMatrix()
-    }
-
-    calcProjectionMatrix() {
-        if (this.pos === undefined || this.rot === undefined || this.scale === undefined) return null
-        const [u,v] = this.pos
-        const translateMat = [
-            1, 0, 0,
-            0, 1, 0,
-            u, v, 1
-        ]
-        const degrees = this.rot;
-        const rad = degrees * Math.PI / 180;
-        const sin = Math.sin(rad)
-        const cos = Math.cos(rad)
-        const rotationMat = [
-            cos, -sin, 0,
-            sin, cos, 0,
-            0, 0, 1
-        ]
-        const [k1, k2] = this.scale
-        const scaleMat = [
-            k1, 0, 0,
-            0, k2, 0,
-            0, 0, 1
-        ]
-        const projectionMat = multiplyMatrix(multiplyMatrix(rotationMat, scaleMat), translateMat)
-        return projectionMat
-    }
-    */
 
     bind() {
         const gl = this.gl;
@@ -89,7 +46,7 @@ class GLObject {
         const gl = this.gl;
         gl.useProgram(this.shader);
 
-        gl.clear( gl.COLOR_BUFFER_BIT );
+        // gl.clear( gl.COLOR_BUFFER_BIT );
         // var vertexPos = gl.getAttribLocation(this.shader, 'a_pos')
         // var uniformCol = gl.getUniformLocation(this.shader, 'u_fragColor')
         // var uniformPos = gl.getUniformLocation(this.shader, 'u_proj_mat')
@@ -111,34 +68,7 @@ class GLObject {
         gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
         gl.enableVertexAttribArray( vColor );
         console.log(this.va.length);
+        console.log(flatten(this.ca));
         gl.drawArrays(gl.TRIANGLES_FAN, 0, this.va.length/2);
-    }
-
-    drawSelect(selectProgram) {
-        const gl = this.gl
-        const id = this.id
-        gl.useProgram(selectProgram)
-        // console.log(selectProgram)
-        var vertexPos = gl.getAttribLocation(this.shader, 'a_pos')
-        var uniformCol = gl.getUniformLocation(this.shader, 'u_fragColor')
-        var uniformPos = gl.getUniformLocation(this.shader, 'u_proj_mat')
-        gl.uniformMatrix3fv(uniformPos, false, this.projectionMat)
-        gl.vertexAttribPointer(
-            vertexPos,
-            2, // it's 2 dimensional
-            gl.FLOAT,
-            false,
-            0,
-            0
-        )
-        gl.enableVertexAttribArray(vertexPos)
-        const uniformId = [
-            ((id >> 0) & 0xFF) / 0xFF,
-            ((id >> 8) & 0xFF) / 0xFF,
-            ((id >> 16) & 0xFF) / 0xFF,
-            ((id >> 24) & 0xFF) / 0xFF,
-        ]
-        gl.uniform4fv(uniformCol, uniformId)
-        gl.drawArrays(gl.TRIANGLES, 0, this.va.length/2);
     }
 }

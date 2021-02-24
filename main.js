@@ -13,9 +13,9 @@ const notSelected = -1;
 var cindex = 0;
 
 var triangleData = [
-    0.1, 0.1,
-    1.0, 0.0,
-    0.0, 1.0
+    vec2(0.1, 0.1),
+    vec2(1.0, 0.0),
+    vec2(0.0, 1.0)
 ]
 
 var colors = [
@@ -28,6 +28,7 @@ var colors = [
     vec4( 1.0, 0.0, 1.0, 1.0 ),  // magenta
     vec4( 0.0, 1.0, 1.0, 1.0)   // cyan
 ];
+
 var t;
 var numPolygons = 0;
 var numIndices = [];
@@ -107,29 +108,29 @@ window.onload = function init() {
     gl.useProgram( program );
 
     
-    var bufferId = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
-    // gl.bufferData( gl.ARRAY_BUFFER, 8*maxNumVertices, gl.STATIC_DRAW );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(triangleData), gl.STATIC_DRAW );
-    var vPos = gl.getAttribLocation( program, "vPosition" );
-    gl.vertexAttribPointer( vPos, 2, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( vPos );
+    // var bufferId = gl.createBuffer();
+    // gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
+    // // gl.bufferData( gl.ARRAY_BUFFER, 8*maxNumVertices, gl.STATIC_DRAW );
+    // gl.bufferData( gl.ARRAY_BUFFER, flatten(triangleData), gl.STATIC_DRAW );
+    // var vPos = gl.getAttribLocation( program, "vPosition" );
+    // gl.vertexAttribPointer( vPos, 2, gl.FLOAT, false, 0, 0 );
+    // gl.enableVertexAttribArray( vPos );
 
-    var cBufferId = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, cBufferId );
-    // gl.bufferData( gl.ARRAY_BUFFER, 16*maxNumVertices, gl.STATIC_DRAW );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(colors[cindex]), gl.STATIC_DRAW );
-    var vColor = gl.getAttribLocation( program, "vColor" );
-    gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
-    gl.enableVertexAttribArray( vColor );
+    // var cBufferId = gl.createBuffer();
+    // gl.bindBuffer( gl.ARRAY_BUFFER, cBufferId );
+    // // gl.bufferData( gl.ARRAY_BUFFER, 16*maxNumVertices, gl.STATIC_DRAW );
+    // gl.bufferData( gl.ARRAY_BUFFER, flatten(colors[cindex]), gl.STATIC_DRAW );
+    // var vColor = gl.getAttribLocation( program, "vColor" );
+    // gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
+    // gl.enableVertexAttribArray( vColor );
     
-    gl.drawArrays(gl.TRIANGLE_FAN, 0, 3);
+    // gl.drawArrays(gl.TRIANGLE_FAN, 0, 3);
 
-    // const glObject = new GLObject(0, program, gl);
-    // glObject.setVertexArray(vertexArray);
-    // glObject.setColorArray(vec4(colors[cindex]));
-    // glObject.bind();
-    // glObject.draw();
+    const glObject = new GLObject(0, program, gl);
+    glObject.setVertexArray(triangleData);
+    glObject.setColorArray(vec4(colors[cindex]));
+    glObject.bind();
+    glObject.draw();
 
     console.log("hoho");
 }
