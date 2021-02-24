@@ -18,6 +18,12 @@ var triangleData = [
     vec2(0.0, 1.0)
 ]
 
+var triangleData2 = [
+    vec2(0.2, 0.2),
+    vec2(0.9, 0.0),
+    vec2(0.0, 1.0)
+]
+
 var colors = [
 
     vec4( 0.0, 0.0, 0.0, 1.0 ),  // black
@@ -107,30 +113,27 @@ window.onload = function init() {
     var program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 
-    
-    // var bufferId = gl.createBuffer();
-    // gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
-    // // gl.bufferData( gl.ARRAY_BUFFER, 8*maxNumVertices, gl.STATIC_DRAW );
-    // gl.bufferData( gl.ARRAY_BUFFER, flatten(triangleData), gl.STATIC_DRAW );
-    // var vPos = gl.getAttribLocation( program, "vPosition" );
-    // gl.vertexAttribPointer( vPos, 2, gl.FLOAT, false, 0, 0 );
-    // gl.enableVertexAttribArray( vPos );
-
-    // var cBufferId = gl.createBuffer();
-    // gl.bindBuffer( gl.ARRAY_BUFFER, cBufferId );
-    // // gl.bufferData( gl.ARRAY_BUFFER, 16*maxNumVertices, gl.STATIC_DRAW );
-    // gl.bufferData( gl.ARRAY_BUFFER, flatten(colors[cindex]), gl.STATIC_DRAW );
-    // var vColor = gl.getAttribLocation( program, "vColor" );
-    // gl.vertexAttribPointer( vColor, 4, gl.FLOAT, false, 0, 0 );
-    // gl.enableVertexAttribArray( vColor );
-    
-    // gl.drawArrays(gl.TRIANGLE_FAN, 0, 3);
+    var colouring = new Array();
+    colouring.push(colors[cindex]);
+    colouring.push(colors[cindex]);
+    colouring.push(colors[cindex]);
 
     const glObject = new GLObject(0, program, gl);
     glObject.setVertexArray(triangleData);
-    glObject.setColorArray(vec4(colors[cindex]));
+    glObject.setColorArray(colouring);
     glObject.bind();
     glObject.draw();
+
+    var colouring = new Array();
+    colouring.push(colors[cindex+1]);
+    colouring.push(colors[cindex+1]);
+    colouring.push(colors[cindex+1]);
+
+    const glObject2 = new GLObject(0, program, gl);
+    glObject2.setVertexArray(triangleData2);
+    glObject2.setColorArray(colouring);
+    glObject2.bind();
+    glObject2.draw();
 
     console.log("hoho");
 }
