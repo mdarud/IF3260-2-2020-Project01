@@ -2,7 +2,6 @@ class Renderer {
     objectList;
     count;
 
-
     constructor() {
         this.objectList = new Array();
         this.count = 0;
@@ -15,8 +14,8 @@ class Renderer {
     }
 
 
-    removeObject(id) {
-        const idx = this.objectList.findIndex(obj => obj.id === id)
+    removeObject(idk) {
+        const idx = this.objectList.findIndex(obj => obj.idk === idk)
         this.objectList.splice(idx, 1)
         this.count--
     }

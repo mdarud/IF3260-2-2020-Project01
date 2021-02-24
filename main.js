@@ -24,6 +24,15 @@ var triangleData2 = [
     vec2(0.0, 1.0)
 ]
 
+var polygonData = [
+    vec2(0.1, 0.1),
+    vec2(1.0, 0.0),
+    vec2(0.0, 1.0),
+    vec2(1.0, 1.0)
+]
+
+const renderer = new Renderer();
+
 var colors = [
 
     vec4( 0.0, 0.0, 0.0, 1.0 ),  // black
@@ -79,8 +88,8 @@ window.onload = function init() {
     });
 
     canvas.addEventListener("mousedown", function(event){
-        t  = vec2(2*(event.clientX-8)/canvas.width-1,
-           2*(canvas.height-event.clientY+8)/canvas.height-1);
+        t = vec2(2*(event.clientX-8)/canvas.width-1,
+            2*(canvas.height-event.clientY+8)/canvas.height-1);
 
         
         // gl.bindBuffer( gl.ARRAY_BUFFER, bufferId );
@@ -117,23 +126,26 @@ window.onload = function init() {
     colouring.push(colors[cindex]);
     colouring.push(colors[cindex]);
     colouring.push(colors[cindex]);
+    colouring.push(colors[cindex]);
 
-    const glObject = new GLObject(program, gl);
-    glObject.setVertexArray(triangleData);
+    var glObject = new GLObject("POLYGON", program, gl);
+    glObject.setVertexArray(polygonData);
     glObject.setColorArray(colouring);
     glObject.bind();
-    glObject.draw();
+    renderer.addObject(glObject);
 
     var colouring = new Array();
     colouring.push(colors[cindex+1]);
     colouring.push(colors[cindex+1]);
     colouring.push(colors[cindex+1]);
 
-    const glObject2 = new GLObject(program, gl);
-    glObject2.setVertexArray(triangleData2);
-    glObject2.setColorArray(colouring);
-    glObject2.bind();
-    glObject2.draw();
+    var glObject = new GLObject("POLYGON", program, gl);
+    glObject.setVertexArray(triangleData2);
+    glObject.setColorArray(colouring);
+    glObject.bind();
+    renderer.addObject(glObject);
+
+    renderer.render();
 
     console.log("hoho");
 }
