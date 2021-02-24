@@ -118,7 +118,7 @@ window.onload = function init() {
     colouring.push(colors[cindex]);
     colouring.push(colors[cindex]);
 
-    const glObject = new GLObject(0, program, gl);
+    const glObject = new GLObject(program, gl);
     glObject.setVertexArray(triangleData);
     glObject.setColorArray(colouring);
     glObject.bind();
@@ -129,7 +129,7 @@ window.onload = function init() {
     colouring.push(colors[cindex+1]);
     colouring.push(colors[cindex+1]);
 
-    const glObject2 = new GLObject(0, program, gl);
+    const glObject2 = new GLObject(program, gl);
     glObject2.setVertexArray(triangleData2);
     glObject2.setColorArray(colouring);
     glObject2.bind();

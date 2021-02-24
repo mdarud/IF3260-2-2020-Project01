@@ -1,16 +1,16 @@
 "use strict";
 
 class GLObject {
-    id;
-    va;
-    ca;
-    shader;
-    bufferId;
-    cBufferId;
-    gl;
+    id;         // identity 
+    va;         // vertex attribute
+    ca;         // color attribute
+    shader;     // shader program
+    bufferId;   // buffer for vertex
+    cBufferId;  // buffer for colour
+    gl;         // GL
 
-    constructor(id, shader, /*bufferId, cBufferId,*/ gl) {
-        this.id = id;
+    constructor(shader, gl) {
+        this.id = "POLYGON";
         this.shader = shader;
         // this.bufferId = bufferId;
         // this.cBufferId = cBufferId;
