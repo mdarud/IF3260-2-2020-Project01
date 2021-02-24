@@ -1,1 +1,56 @@
-<canvas id="c"></canvas>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>WebGL Drawing Canvas</title>
+
+    <script id="vshader" type="x-shader/x-vertex">
+	attribute vec4 vPosition;
+	attribute vec4 vColor;
+	varying vec4 fColor;
+	uniform mat4 projMatrix;
+
+	void main() {
+		gl_Position = projMatrix * vPosition;	// Point position
+  		gl_PointSize = 3.0;		// Point size
+		fColor = vColor;			// Pass point color to fragment shader
+  	}
+    </script>
+
+    <script id="fshader" type="x-shader/x-fragment">
+	precision mediump float;
+	varying vec4 fColor;
+
+	void main() 
+	{
+		gl_FragColor = fColor;	// Point color
+  	}
+    </script>
+
+    <script src="lib/webgl-utils.js"></script>
+    <script src="lib/initShaders.js"></script>
+    <script src="lib/MV.js"></script>
+
+    <script src="index.js"></script>
+
+</head>
+
+<body onload="main()">
+
+<H1>Project 1 - WebGL Drawing Canvas</H1>
+
+<h2 id="mode">Drawing Mode</h2>
+<p id="modeDescription">You are currently Doing nothing </p>
+<h2></h2>
+
+<canvas id="webgl" width="640" height="480" style="border:1px solid #000000">
+    Please use a browser that supports the "canvas" tag.
+</canvas>
+<h2></h2>
+<button onclick="drawConditional()">Draw!</button>
+<button onclick="drawLines()">DrawLines</button>
+<button onclick="drawPoligon()">DrawPoligon</button>
+<button onclick="drawSquare()">drawRectangle</button>
+
+</body>
+</html>
